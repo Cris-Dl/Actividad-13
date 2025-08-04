@@ -1,12 +1,44 @@
 students = {}
 def add_student():
-    id_student = str(input("Ingrese el ID del estudiante: "))
-    name_student = str(input("Ingrese el nombre del estudiante: "))
-    degree_student = str(input("Ingrese la carrera o programa academico: "))
+    while True:
+        try:
+            id_student = str(input("Ingrese el ID del estudiante: "))
+            if not id_student.strip():
+                raise ValueError("Error. No se puede dejar el campo vacio")
+            break
+        except ValueError:
+            print("Error. Ingrese un ID valido")
+        except Exception as e:
+            print("Ha ocurrido un error, vuelva a intentar")
+
+    while True:
+        try:
+            name_student = str(input("Ingrese el nombre del estudiante: "))
+            if not name_student.strip():
+                raise ValueError("Error. No se puede dejar el campo vacio")
+            break
+        except ValueError:
+            print("Error. Ingrese correctamente el nombre del estudiante")
+        except Exception as e:
+            print("Ha ocurrido un error, vuelva a intentar")
+
+    while True:
+        try:
+            degree_student = str(input("Ingrese la carrera o programa academico: "))
+            if not degree_student.strip():
+                raise ValueError("Error, el campo no puede estar vacio")
+            break
+        except ValueError:
+            print("Error. Ingrese correctamente la carrera o el programa academico del estudiante")
+        except Exception as e:
+            print("Ha ocurrido un error, vuelva a intentar")
     students[id_student] = {"nombre":name_student, "carrera":degree_student, "cursos":{}}
     print("Se agregó al estudiante correctamente")
 
 def add_course():
+    if not students:
+        print("")
+        return
     if students:
         id_search2 = str(input("Ingrese el ID del estudiante: "))
         if id_search2 in students:
