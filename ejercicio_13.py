@@ -4,6 +4,7 @@ def add_student():
     name_student = str(input("Ingrese el nombre del estudiante: "))
     degree_student = str(input("Ingrese la carrera o programa academico: "))
     students[id_student] = {"nombre":name_student, "carrera":degree_student, "cursos":{}}
+    print("Se agregó al estudiante correctamente")
 
 def add_course():
     if students:
@@ -13,6 +14,7 @@ def add_course():
             final_qualification = float(input("Ingrese la nota final del estudiante: "))
             if final_qualification > 0 and final_qualification <=100:
                 students[id_search2]['cursos'][course_name] = final_qualification
+                print("Se agregó la el curso y la nota correctamente")
             else:
                 print("La nota solo debe ser entre 0 a 100")
         else:
@@ -72,6 +74,24 @@ def check_passes():
     else:
         print("No hay ningun estudiante añadido")
 
+def view_info_students():
+    if students:
+        print("Los estudiantes registrados son los siguientes: ")
+        for student, info in students.items():
+            print(f"ID de estudiante: {student}")
+            print(f"Nombre: {info['nombre']}")
+            print(f"Carrera o programa academico: {info['carrera']}")
+            print()
+            if students[student]['cursos']:
+                print("Cursos añadidos:")
+                for course, qualification in students[student]['cursos'].items():
+                    print(f"Curso: {course}. Nota: {qualification}")
+                print()
+            else:
+                print("No se ha añadido algún curso al estudiante")
+    else:
+        print("No hay ningun estudiante añadido")
+
 while True:
     print("--Menú--")
     print("1.- Agregar estudiante")
@@ -106,8 +126,11 @@ while True:
             print()
         case "6":
             print("Mostrar a todos los estudiantes")
+            view_info_students()
+            print()
         case "7":
             print("Saliendo del programa, gracias por su preferencia")
             break
         case _:
             print("Valor invalido, vuelva a intentar")
+            print()
