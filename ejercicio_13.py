@@ -11,7 +11,10 @@ def add_course():
         if id_search2 in students:
             course_name = str(input("Ingrese el nombre del curso: "))
             final_qualification = float(input("Ingrese la nota final del estudiante: "))
-            students[id_search2]['cursos'][course_name] = final_qualification
+            if final_qualification > 0 and final_qualification <=100:
+                students[id_search2]['cursos'][course_name] = final_qualification
+            else:
+                print("La nota solo debe ser entre 0 a 100")
         else:
             print(f"El ID {id_search2} no se ha encontrado en la base de datos")
     else:
@@ -34,6 +37,40 @@ def consult_student():
     else:
         print("No hay ningun estudiante añadido")
 
+def calculate_average():
+    if students:
+        id_search3 = str(input("Ingrese el ID del estudiante a calcular su promedio de notas: "))
+        if id_search3 in students:
+            if students[id_search3]['cursos']:
+                total_grade = 0
+                total_course = 0
+                for course, nota in students[id_search3]['cursos'].items():
+                    total_course += 1
+                    total_grade = total_grade + nota
+                print(f"El promedio entre todos los cursos es de {total_grade/total_course}")
+            else:
+                print("No se ha añadido algún curso al estudiante")
+        else:
+            print(f"El ID {id_search3} no se ha encontrado en la base de datos")
+    else:
+        print("No hay ningun estudiante añadido")
+
+def check_passes():
+    if students:
+        id_search4 = str(input("Ingrese el ID del estudiante a verificar si aprueba los cursos: "))
+        if id_search4 in students:
+            if students[id_search4]['cursos']:
+                for course, qualification in students[id_search4]['cursos'].items():
+                    if qualification >= 61:
+                        print(f"El curso {course} se ha aprobado con una nota de {qualification}")
+                    else:
+                        print(f"El curso {course} no se ha aprobado ya que no alcanzó lan nota minima de 61 puntos")
+            else:
+                print("No se ha añadido algún curso al estudiante")
+        else:
+            print(f"El ID {id_search4} no se ha encontrado en la base de datos")
+    else:
+        print("No hay ningun estudiante añadido")
 
 while True:
     print("--Menú--")
@@ -61,8 +98,12 @@ while True:
             print()
         case "4":
             print("Calcular promedio del estudiante")
+            calculate_average()
+            print()
         case "5":
             print("Verificar si aprueba")
+            check_passes()
+            print()
         case "6":
             print("Mostrar a todos los estudiantes")
         case "7":
