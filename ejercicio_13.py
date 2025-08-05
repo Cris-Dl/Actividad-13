@@ -37,42 +37,78 @@ def add_student():
 
 def add_course():
     if not students:
-        print("")
+        print("No hay ni un estudiante registrado")
         return
-    if students:
-        id_search2 = str(input("Ingrese el ID del estudiante: "))
-        if id_search2 in students:
-            course_name = str(input("Ingrese el nombre del curso: "))
-            final_qualification = float(input("Ingrese la nota final del estudiante: "))
-            if final_qualification > 0 and final_qualification <=100:
-                students[id_search2]['cursos'][course_name] = final_qualification
-                print("Se agregó la el curso y la nota correctamente")
+    while True:
+        try:
+            id_search2 = str(input("Ingrese el ID del estudiante: "))
+            if not id_search2.strip():
+                raise ValueError("Error. El campo no puede estar vacio")
+            if id_search2 not in students:
+                print(f"El ID {id_search2} no se encuentra en la base de datos")
             else:
-                print("La nota solo debe ser entre 0 a 100")
-        else:
-            print(f"El ID {id_search2} no se ha encontrado en la base de datos")
-    else:
-        print("No hay ningun estudiante añadido")
+                break
+        except ValueError:
+            print("Error. Ingrese correctamente el ID del estudiante")
+        except Exception as e:
+            print("Ha ocurrido un error, vuelva a intentar")
+
+    if id_search2 in students:
+        while True:
+            try:
+                course_name = str(input("Ingrese el nombre del curso: "))
+                if not course_name.strip():
+                    raise ValueError("Error. El campo no puede estar vacio")
+                break
+            except ValueError:
+                print("Error. Ingrese correctamente el nombre del curso")
+            except Exception:
+                print("Ha ocurrido un error, vuelva a intentar")
+
+        while True:
+            try:
+                final_qualification = float(input("Ingrese la nota final del estudiante: "))
+                if final_qualification >= 0 and final_qualification <=100:
+                    break
+                else:
+                    print("Error. La nota debe ser entre 0 a 100")
+            except ValueError:
+                print("Error. Solo se pueden ingresar numero (0 a 100)")
+            except Exception as e:
+                print("Ha ocurrido un error, vuelva a intentar")
+        students[id_search2]['cursos'][course_name] = final_qualification
+        print("Se agregó el curso y la nota correctamente")
 
 def consult_student():
-    if students:
-        id_search = str(input("Ingrese el ID del estudiante a consultar: "))
-        if id_search in students:
-            print(f"Nombre del estudiante: {students[id_search]['nombre']}")
-            print(f"Carrera o programa academico: {students[id_search]['carrera']}")
-            if students[id_search]['cursos']:
-                print("Cursos añadidos")
-                for course, qualification in students[id_search]["cursos"].items():
-                    print(f"Curso: {course}, Nota Final: {qualification}")
+    if not students:
+        print("No hay ni un estudiante registrado")
+        return
+    while True:
+        try:
+            id_search = str(input("Ingrese el ID del estudiante a consultar: "))
+            if not id_search.strip():
+                raise ValueError("Error. El campo no puede estar vacio")
+            if id_search not in students:
+                print(f"El ID {id_search}  no se encuentra en la base de datos")
             else:
-                print("No se ha añadido algún curso al estudiante")
+                break
+        except ValueError:
+            print("Error. Ingrese correctamente el ID del estudiante")
+        except Exception:
+            print("Ha ocurrido un error, vuelva a intentar")
+    if id_search in students:
+        print(f"Nombre del estudiante: {students[id_search]['nombre']}")
+        print(f"Carrera o programa academico: {students[id_search]['carrera']}")
+        if students[id_search]['cursos']:
+            print("Cursos añadidos")
+            for course, qualification in students[id_search]["cursos"].items():
+                print(f"Curso: {course}, Nota Final: {qualification}")
         else:
-            print(f"El ID {id_search} no se ha encontrado en la base de datos")
-    else:
-        print("No hay ningun estudiante añadido")
+            print("No se ha añadido algún curso al estudiante")
 
 def calculate_average():
-    if students:
+    if not students:
+        print("No hay ni un estudiante registrado")
         id_search3 = str(input("Ingrese el ID del estudiante a calcular su promedio de notas: "))
         if id_search3 in students:
             if students[id_search3]['cursos']:
